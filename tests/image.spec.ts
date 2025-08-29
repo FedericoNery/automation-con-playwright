@@ -5,11 +5,16 @@ const url = 'https://demoqa.com/broken';
 test('Valid image', async ({ page }) => {
   await page.goto(url);
 
-  await page.locator('img')({ src: "/images/Toolsqa.jpg"  })
-  await expect(page).toHaveTitle(/Playwright/);
+  //const validImage = page.locator('img[src="/images/Toolsqa.jpg]"')
+  //TUVE QUE USAR EL XPATH PORQUE NO ME ANDABA EL LOCATOR CON EL SRC
+  const validImage = page.locator('//*[@id="app"]/div/div/div/div[2]/div[2]/img[1]')
+  
+  await expect(validImage).toBeVisible();
 });
 
-test('Broken image', async ({ page }) => {
+//HABRIA QUE HACER UN TEST QUE EFECTIVAMENTE TENGA UNA IMAGEN ROTA PARA QUE TENGA SENTIDO ESTE TEST
+//ALGO ASI COMO QUE EL ANCHO DE LA IMAGEN SEA 0 o algún valor que indique que la imagen no se cargo bien.
+test.skip('Broken image', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
   // Click the get started link.
