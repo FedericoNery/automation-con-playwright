@@ -20,7 +20,8 @@ test.describe("Language Tests", () => {
     const context = await browser.newContext();
 
     /*
-    Cuando hacés page.goto(...), Playwright crea una nueva página, pero si no usás context.newPage() después de agregar la cookie, esa cookie no se aplica correctamente en la navegación inicial
+      Cuando hacés page.goto(...), Playwright crea una nueva página, pero si no usás context.newPage() después de agregar la cookie, 
+      esa cookie no se aplica correctamente en la navegación inicial
     */
 
     //Playwright recomienda usar url para asegurar que la cookie se guarde correctamente

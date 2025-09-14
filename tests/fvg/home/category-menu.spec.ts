@@ -4,7 +4,7 @@ const url = "https://www.fravega.com/"
 
 const dataMenuCategories = {
   sections: [
-    /* {
+    {
       label: "Categorías",
       //@ts-ignore
       type: "text",
@@ -49,19 +49,19 @@ const dataMenuCategories = {
         ]
       }
       ]
-    }, */
-/*     {
+    },
+    {
       label: "Más Vendidos",
       type: "link",
       highlighted: true,
       href: "/e/ofertas/mas-vendidos/",
-    }, */
-    {
+    },
+/*     {
       label: "Compra Internacional",
       type: "link",
       highlighted: false,
       href: "/e/compras-internacionales/",
-    },
+    }, */
   ]
 }
 
@@ -75,18 +75,21 @@ async function resolveText(section, page: Page) {
 }
 
 async function resolveLink(section, page: Page) {
-  console.log("ENTRO LINK");
-  console.log(section);
+  console.log("Resolviendo enlace:", section.label);
+  console.log("Resolviendo enlace:", section.type);
   if (section.type === "link") {
-    //const link = await page.getByRole('link', { name: section.href }).first();
     const anchor = page.locator(`a[href="${section.href}"]`).first();
-    const span = page.locator(`a[href="${section.href}"]>span`, {hasText: section.label}).first();
-    console.log(section.href)
-    console.log(section.label)
-    //await expect(span).toBeVisible();
-    console.log("anchor", anchor)
+    const span = page.locator(`a[href="${section.href}"]>span`, { hasText: section.label }).first();
 
+    // Espera explícita para asegurarte de que el elemento esté visible y cargado
+
+    console.log("Href esperado:", section.href);
+    const hrefValue = await anchor.getAttribute('href', { timeout: 5000 });
+    console.log("Href encontrado:", hrefValue);
+
+    // Verifica que el atributo href sea el esperado
     await expect(anchor).toHaveAttribute('href', section.href);
+
     if (section.highlighted) {
       await expect(span).toHaveCSS('color', 'rgb(128, 29, 217)');
     } else {
@@ -111,14 +114,24 @@ async function resolveStrategyCategoryMenu(section, page: Page) {
 }
 
 async function resolveCategoryMenu(sections, page: Page) {
-  sections.forEach(async (section) => {
+  for (const section of sections) {
+    if (section?.sections) {
+      await resolveCategoryMenu(section.sections, page);
+    } else {
+      console.log("Sección a resolver:", section);
+      await resolveStrategyCategoryMenu(section, page);
+    }
+  }
+
+  /* sections.forEach(async (section) => {
     if (section?.sections) {
       await resolveCategoryMenu(section.sections, page);
     }
     else {
+      console.log("Sección a resolver:", section);
       await resolveStrategyCategoryMenu(section, page);
     }
-  });
+  }); */
 }
 
 
