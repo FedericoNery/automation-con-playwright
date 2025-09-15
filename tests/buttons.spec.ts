@@ -12,6 +12,14 @@ test('click me', async ({ page }) => {
   await expect(page.getByText(/You have done a dynamic click/i)).toBeVisible();
 });
 
+test('click me 2', async ({ page }) => {
+  await page.goto(url);
+
+  await page.getByRole('button', {name: "Click Me", exact: true}).click();
+
+  await expect(page.getByText(/You have done a dynamic click/i)).toBeVisible();
+});
+
 test('right click me', async ({ page }) => {
   await page.goto(url);
 
