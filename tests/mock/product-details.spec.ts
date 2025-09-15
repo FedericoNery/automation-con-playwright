@@ -10,14 +10,6 @@ const skus = [
         salePrice: '$1.399.999',
         available: true,
     },
-    /* '161061',
-    '596212',
-    '170502',
-    '990014869',
-    '14219',
-    '782722',
-    '161138',
-    '110429', */
 ]
 
 const urls = skus.map(product => `https://fravega.com/p/aaaa-${product.sku}`)
@@ -26,13 +18,12 @@ import { test, expect } from '@playwright/test';
 
 
 test("mock purchase button response", async ({ page }) => {
-    // Mock the api call before navigating
-    // Interceptar la ruta GraphQL antes de que se dispare
+  // Intercepta la ruta de la API en GraphQL
   await page.route('https://www.fravega.com/api/v1', async route => {
     const request = route.request();
     const postData = request.postDataJSON();
 
-    // Filtrar por operación específica
+    // Filtrado por la query que se ejecuta
     if (postData.operationName === 'availability_Shopping') {
       const mockedResponse = {
         "data": {
@@ -50,7 +41,7 @@ test("mock purchase button response", async ({ page }) => {
         body: JSON.stringify(mockedResponse),
       });
     } else {
-      // Dejar pasar otras operaciones
+      // El resto de las queries se ejecutan con normalidad
       await route.continue();
     }
   });
@@ -59,7 +50,7 @@ test("mock purchase button response", async ({ page }) => {
     await expect(page).toHaveTitle(skus[0].title);
     const purchaseButton = page.getByRole('button', {name: 'Comprar'}).first();
     //data-test-id="price-wrapper"
-    await expect(await purchaseButton.isEnabled()).toBe(skus[0].available);
+    expect(await purchaseButton.isEnabled()).toBe(skus[0].available);
     await purchaseButton.click()
     const infoProductNotAvailable = page.getByText("En este momento no es posible avanzar con la compra de este producto.")
     await expect(infoProductNotAvailable).toBeVisible()

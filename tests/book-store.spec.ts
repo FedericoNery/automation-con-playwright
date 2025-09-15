@@ -34,7 +34,7 @@ test.describe("Book Store", () => {
         const results = page.locator('.rt-tr-group');
         const authors = results.locator('.rt-td');
         const authorSearched = authors.filter({hasText: "Richard"});
-        const count = await authors.filter({hasText: "Richard"}).count();
+        const count = await authorSearched.count();
         expect(count).toBe(1)
         expect(await authorSearched.textContent()).toContain('Richard E. Silverman')
     })
