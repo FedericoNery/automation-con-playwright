@@ -48,7 +48,9 @@ test("mock purchase button response", async ({ page }) => {
 
     await page.goto(urls[0]);
     await expect(page).toHaveTitle(skus[0].title);
-    const purchaseButton = page.getByRole('button', {name: 'Comprar'}).first();
+    const purchaseButton = page.getByRole('button', {name: 'Comprar'});
+    //const purchaseButton = page.locator('button[data-test-id="product-buy-button"]').nth(1);
+    
     //data-test-id="price-wrapper"
     expect(await purchaseButton.isEnabled()).toBe(skus[0].available);
     await purchaseButton.click()

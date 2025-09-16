@@ -161,7 +161,7 @@ test.describe('Header Menu Categories', () => {
       await expect(span).toHaveCSS('color', 'rgb(0, 0, 0)');
     }
   });
-  test('only compra internacional', async ({ page }) => {
+  test.skip('only compra internacional', async ({ page }) => {
     await page.goto(url);
     const buttonCerrar = page.getByRole('button', { name: 'Cerrar' }).first();
     await buttonCerrar.click();

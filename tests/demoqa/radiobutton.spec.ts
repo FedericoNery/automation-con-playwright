@@ -33,7 +33,7 @@ test.describe('Radio button', () => {
       // Selector específico para Chromium
       spanSuccess = page.locator('span.text-success');
     } else {
-      // Selector más robusto para otros navegadores
+      // Selector más robusto
       spanSuccess = page.getByText('Yes', { exact: true });
     }
 

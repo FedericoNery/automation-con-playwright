@@ -1,10 +1,7 @@
 import test, { expect } from "@playwright/test";
 const url = 'https://demoqa.com/books';
 
-
-
 //Petición HTTP https://demoqa.com/BookStore/v1/Books
-
 
 test.describe("Book Store", () => {
     test("Assert search filter with words 'G'", async ({ page }) => {
